@@ -1,5 +1,6 @@
 import { Produto as ProdutoType } from '../App'
 import Produto from '../components/Produto'
+import { useGetProdutosQuery } from '../services/api'
 
 import * as S from './styles'
 
@@ -21,6 +22,14 @@ const ProdutosComponent = ({
     const IdsDosFavoritos = favoritos.map((f) => f.id)
 
     return IdsDosFavoritos.includes(produtoId)
+  }
+
+  const { data: produtose } = useGetProdutosQuery()
+
+  if (!produtose) {
+    console.log('A query esta em andamento')
+  } else {
+    console.log('Dados da query: ', produtose)
   }
 
   return (
