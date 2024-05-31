@@ -13,19 +13,19 @@ const favoritoSlice = createSlice({
   name: 'favorito',
   initialState,
   reducers: {
-    star: (state, action: PayloadAction<Produto>) => {
-      const favorito = action.payload
+    toggleStar: (state, action: PayloadAction<Produto>) => {
+      const favoritos = action.payload
 
-      const verificarIn = state.itens.findIndex((p) => p.id === favorito.id)
+      const verificarIn = state.itens.findIndex((p) => p.id === favoritos.id)
 
       if (verificarIn !== -1) {
         state.itens.splice(verificarIn, 1)
       } else {
-        state.itens.push(favorito)
+        state.itens.push(favoritos)
       }
     }
   }
 })
 
-export const { star } = favoritoSlice.actions
+export const { toggleStar } = favoritoSlice.actions
 export default favoritoSlice.reducer

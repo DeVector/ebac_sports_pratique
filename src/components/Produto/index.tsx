@@ -1,8 +1,8 @@
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { Produto as ProdutoType } from '../../App'
 import * as S from './styles'
 import { adicionar } from '../../store/reducers/shopCar'
-import { star } from '../../store/reducers/favoitos'
+import { toggleStar } from '../../store/reducers/favoitos'
 
 type Props = {
   produto: ProdutoType
@@ -16,8 +16,11 @@ export const paraReal = (valor: number) =>
     valor
   )
 
-const ProdutoComponent = ({ produto, estaNosFavoritos }: Props) => {
+const ProdutoComponent = ({ produto }: Props) => {
   const dispatch = useDispatch()
+  const isStar = useSelector((state: { favorito: { itens: ProdutoType[] } }) =>
+    state.favorito.itens.some((item: ProdutoType) => item.id === produto.id)
+  )
 
   return (
     <S.Produto>
@@ -28,10 +31,8 @@ const ProdutoComponent = ({ produto, estaNosFavoritos }: Props) => {
       <S.Prices>
         <strong>{paraReal(produto.preco)}</strong>
       </S.Prices>
-      <S.BtnComprar onClick={() => dispatch(star(produto))} type="button">
-        {estaNosFavoritos
-          ? '- Remover dos favoritos'
-          : '+ Adicionar aos favoritos'}
+      <S.BtnComprar onClick={() => dispatch(toggleStar(produto))} type="button">
+        {isStar ? '- Remover dos favoritos' : '+ Adicionar aos favoritos'}
       </S.BtnComprar>
       <S.BtnComprar onClick={() => dispatch(adicionar(produto))} type="button">
         Adicionar ao carrinho
